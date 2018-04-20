@@ -1,0 +1,19 @@
+{
+  "name": "node-mentoring",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon -r babel-register app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mikita Zakharanka <anzed313@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-register": "6.26.0",
+    "nodemon": "1.17.3"
+  }
+}
