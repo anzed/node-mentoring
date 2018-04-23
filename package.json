@@ -6,12 +6,8 @@
   "scripts": {
     "start": "nodemon -r babel-register app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint **/*.js --ignore-pattern node_modules/"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "lint": "eslint **/*.js --ignore-pattern node_modules/",
+    "precommit": "npm run lint"
   },
   "author": "Mikita Zakharanka <anzed313@gmail.com>",
   "license": "ISC",
