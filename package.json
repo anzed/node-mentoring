@@ -5,7 +5,13 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon -r babel-register app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint **/*.js --ignore-pattern node_modules/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "author": "Mikita Zakharanka <anzed313@gmail.com>",
   "license": "ISC",
@@ -17,6 +23,7 @@
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.11.0",
+    "husky": "0.14.3",
     "nodemon": "1.17.3"
   }
 }
