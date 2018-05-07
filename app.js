@@ -1,8 +1,8 @@
 /* eslint no-unused-vars:0 */
-import config from './config';
-import { User, Product } from './models';
+import { Dirwatcher, Importer } from './modules';
 
-console.log(config.appName);
+const dirwatcher = new Dirwatcher('./data', 3000);
+const importer = new Importer();
 
-const user = new User();
-const product = new Product();
+dirwatcher.watch();
+dirwatcher.on('changed', importer.import);
