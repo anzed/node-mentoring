@@ -1,8 +1,14 @@
 /* eslint no-unused-vars:0 */
 import { Dirwatcher, Importer } from './modules';
 
-const dirwatcher = new Dirwatcher('./data', 3000);
+const dirwatcher = new Dirwatcher();
 const importer = new Importer();
 
-dirwatcher.watch();
-dirwatcher.on('changed', importer.import);
+const handleImport = (paths) => {
+    importer.import(paths)
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+};
+
+dirwatcher.watch('./data', 1000);
+dirwatcher.on('changed', handleImport);

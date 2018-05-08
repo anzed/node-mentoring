@@ -11,9 +11,7 @@ export default class Importer {
             });
         });
 
-        return Promise.all(imports)
-            .then(data => console.log(data))
-            .catch(err => console.error(err));
+        return Promise.all(imports);
     }
 
     importSync(paths) {
@@ -22,4 +20,9 @@ export default class Importer {
                 .on('end_parsed', jsonObj => console.log(jsonObj));
         });
     }
+
+    /**
+     * ToDo: implement this method
+     */
+    importAsync() {}
 }

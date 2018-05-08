@@ -2,32 +2,25 @@ import EventEmitter from 'events';
 import fs from 'fs';
 
 export default class Dirwatcher extends EventEmitter {
-    constructor(path, delay) {
-        super();
-
-        this.path = path;
-        this.delay = delay;
-    }
-
-    watch() {
+    watch(path, delay) {
         let prevFiles = [];
         let newFiles;
 
         setInterval(() => {
-            fs.readdir(this.path, (err, files) => {
+            fs.readdir(path, (err, files) => {
                 if (err) {
                     console.error(err);
                 }
 
                 if (this.hasFilesChanged(prevFiles, files)) {
-                    newFiles = this.getNewFiles(prevFiles, files);
+                    newFiles = this.getNewFiles(prevFiles, files, path);
 
                     prevFiles = files;
 
                     this.emit('changed', newFiles);
                 }
             });
-        }, this.delay);
+        }, delay);
     }
 
     hasFilesChanged(prevFiles, nextFiles) {
@@ -38,7 +31,7 @@ export default class Dirwatcher extends EventEmitter {
             return true;
         }
 
-        for (let i = 0; i < sortedNextFiles.length; i + 1) {
+        for (let i = 0; i < sortedNextFiles.length; i++) {
             if (sortedPrevfiles[i] !== sortedNextFiles[i]) {
                 return true;
             }
@@ -47,12 +40,12 @@ export default class Dirwatcher extends EventEmitter {
         return false;
     }
 
-    getNewFiles(prevFiles, nextFiles) {
+    getNewFiles(prevFiles, nextFiles, path) {
         const paths = [];
 
         nextFiles.forEach((file) => {
             if (!prevFiles.includes(file)) {
-                const pathToFile = `${this.path}/${file}`;
+                const pathToFile = `${path}/${file}`;
 
                 paths.push(pathToFile);
             }
