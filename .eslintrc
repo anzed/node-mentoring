@@ -3,6 +3,8 @@
   "rules": {
     "linebreak-style": [ "error", "windows" ],
     "indent": [ "error", 4 ],
-    "import/extensions": { "json": "never" }
+    "import/extensions": { "json": "never" },
+    "class-methods-use-this": 0,
+    "no-plusplus": 0
   }
 }

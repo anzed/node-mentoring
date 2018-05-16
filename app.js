@@ -1,8 +1,30 @@
 /* eslint no-unused-vars:0 */
-import config from './config';
-import { User, Product } from './models';
+import { Dirwatcher, Importer } from './modules';
 
-console.log(config.appName);
+const dirwatcher = new Dirwatcher();
+const importer = new Importer();
 
-const user = new User();
-const product = new Product();
+const logger = (error, data) => {
+    if (error) {
+        console.error(error);
+    }
+
+    console.log(data);
+};
+
+const handleImport = async (paths) => {
+    try {
+        const data = await importer.import(paths);
+
+        logger(null, data);
+    } catch (e) {
+        logger(e);
+    }
+};
+
+const handleSyncImport = (paths) => {
+    importer.importSync(paths, logger);
+};
+
+dirwatcher.watch('./data', 1000);
+dirwatcher.on('changed', handleImport);
