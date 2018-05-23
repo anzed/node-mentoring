@@ -81,6 +81,8 @@ function parseArgs(input, flags) {
             default:
                 cli.showHelp();
         }
+    } else {
+        cli.showHelp();
     }
 }
 
