@@ -36,11 +36,26 @@ function convertToFile(filePath) {
         .on('end_parsed', json => writableStream.write(JSON.stringify(json)));
 }
 
+function cssBundler(path) {
+    const cssFiles = fs.readdirSync(path);
+    const writer = fs.createWriteStream(`${path}/bundle.css`);
+
+    cssFiles.forEach((file) => {
+        const filePath = `${path}/${file}`;
+        const buffer = readCssFile(filePath);
+
+        writer.write(buffer);
+    });
+
+    addExternalFile(writer);
+}
+
 parseArgs(cli.input, cli.flags);
 
 function parseArgs(input, flags) {
     const textString = input[0];
     const filePath = flags.file;
+    const cssPath = flags.path;
     const hasAction = Object.keys(flags).includes('action');
 
     if (hasAction) {
@@ -59,6 +74,9 @@ function parseArgs(input, flags) {
                 break;
             case 'convertToFile':
                 convertToFile(filePath);
+                break;
+            case 'cssBundler':
+                cssBundler(cssPath);
                 break;
             default:
                 cli.showHelp();
@@ -94,4 +112,21 @@ function writable() {
             done();
         },
     });
+}
+
+function readCssFile(filePath) {
+    const fd = fs.openSync(filePath, 'r');
+    const fileInfo = fs.fstatSync(fd);
+    const buffer = Buffer.alloc(fileInfo.size);
+
+    fs.readSync(fd, buffer, 0, fileInfo.size, 0);
+    fs.closeSync(fd);
+
+    return buffer;
+}
+
+function addExternalFile(writer) {
+    const buffer = readCssFile('external_css/nodejs-homework3.css');
+
+    writer.write(buffer);
 }
