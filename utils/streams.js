@@ -15,10 +15,14 @@ function transform(str) {
 function outputFile(filePath) {
     const readableStream = fs.createReadStream(filePath, { encoding: 'utf8' });
 
-    readableStream.pipe(writable());
+    readableStream.pipe(process.stdout);
 }
 
 function convertFromFile(filePath) {
+    if (!isFileExists(filePath)) {
+        throw new Error(`File "${filePath}" doesn't exist`);
+    }
+
     const readableStream = fs.createReadStream(filePath, { encoding: 'utf8' });
 
     csv()
@@ -27,6 +31,10 @@ function convertFromFile(filePath) {
 }
 
 function convertToFile(filePath) {
+    if (!isFileExists(filePath)) {
+        throw new Error(`File "${filePath}" doesn't exist`);
+    }
+
     const targetFilePath = `${filePath.split('.')[0]}.json`;
     const readableStream = fs.createReadStream(filePath, { encoding: 'utf8' });
     const writableStream = fs.createWriteStream(targetFilePath);
@@ -58,13 +66,13 @@ function parseArgs(input, flags) {
     const cssPath = flags.path;
     const hasAction = Object.keys(flags).includes('action');
 
-    if (hasAction) {
+    if (hasAction && !helpIsNeeded()) {
         switch (flags.action) {
             case 'reverse':
-                readable(textString).pipe(processData(reverse)).pipe(writable());
+                readable(textString).pipe(processData(reverse)).pipe(process.stdout);
                 break;
             case 'transform':
-                readable(textString).pipe(processData(transform)).pipe(writable());
+                readable(textString).pipe(processData(transform)).pipe(process.stdout);
                 break;
             case 'outputFile':
                 outputFile(filePath);
@@ -106,22 +114,14 @@ function processData(cb) {
     });
 }
 
-function writable() {
-    return new stream.Writable({
-        objectMode: true,
-        write: (data, _, done) => {
-            console.log(data);
-            done();
-        },
-    });
-}
-
 function readCssFile(filePath) {
     const fd = fs.openSync(filePath, 'r');
     const fileInfo = fs.fstatSync(fd);
     const buffer = Buffer.alloc(fileInfo.size);
+    const bufferStartOffset = 0;
+    const fileStartPosition = 0;
 
-    fs.readSync(fd, buffer, 0, fileInfo.size, 0);
+    fs.readSync(fd, buffer, bufferStartOffset, fileInfo.size, fileStartPosition);
     fs.closeSync(fd);
 
     return buffer;
@@ -131,4 +131,14 @@ function addExternalFile(writer) {
     const buffer = readCssFile('external_css/nodejs-homework3.css');
 
     writer.write(buffer);
+}
+
+function helpIsNeeded() {
+    const args = process.argv.slice(2);
+
+    return args[0] === '--help' || args[0] === '-h';
+}
+
+function isFileExists(filePath) {
+    return fs.existsSync(filePath);
 }
