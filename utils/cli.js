@@ -2,7 +2,7 @@ import meow from 'meow';
 
 const cli = meow(`
     Usage
-      $ node -r babel-registry <input>
+      $ node -r babel-register utils/streams.js <input>
  
     Options
       --action, -a  Choose action
