@@ -7,7 +7,8 @@
     "start": "nodemon -r babel-register app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "streams": "node -r babel-register utils/streams.js"
   },
   "author": "Mikita Zakharanka <anzed313@gmail.com>",
   "license": "ISC",
@@ -23,6 +24,8 @@
     "nodemon": "1.17.3"
   },
   "dependencies": {
-    "csvtojson": "1.1.9"
+    "csvtojson": "1.1.9",
+    "meow": "5.0.0",
+    "through2": "^2.0.3"
   }
 }
