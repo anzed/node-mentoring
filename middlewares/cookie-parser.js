@@ -1,7 +1,7 @@
-import parseHelper from '../helpers/parse-helper';
+import parser from '../helpers/parser';
 
 const cookieParser = (request, response, next) => {
-    const cookies = parseHelper(request.headers.cookie);
+    const cookies = parser(request.headers.cookie);
     const responseObject = {
         parsedCookies: cookies,
     };

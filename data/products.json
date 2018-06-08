@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "brand": "Apple",
+            "model": "iPhone 7"
+        },
+        {
+            "id": 2,
+            "brand": "Apple",
+            "model": "iPhone X"
+        },
+        {
+            "id": 3,
+            "brand": "Samsung",
+            "model": "Galaxy S8"
+        },
+        {
+            "id": 4,
+            "brand": "Samsung",
+            "model": "Galaxy S9"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-const parseHelper = (cookies) => {
+const parser = (cookies) => {
     const parsedCookies = {};
 
     if (!cookies) return parsedCookies;
@@ -13,4 +13,4 @@ const parseHelper = (cookies) => {
     return parsedCookies;
 };
 
-export default parseHelper;
+export default parser;

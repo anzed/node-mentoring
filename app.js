@@ -1,14 +1,16 @@
 import express from 'express';
-import cookieParser from './middlewares/cookie-parser';
-import queryParser from './middlewares/query-parser';
+import { cookieParser, queryParser } from './middlewares';
+import { allRoute, productRoute, productsRoute, userRoute, usersRoute } from './routes';
 
 const app = express();
 const router = express.Router();
+const middlewares = [cookieParser, queryParser];
 
-router.all('*', cookieParser, queryParser, (request, response) => {
-    response.status(200);
-    response.end();
-});
+router.get('/api/products/:id', productRoute);
+router.get('/api/products', productsRoute);
+router.get('/api/users/:id', userRoute);
+router.get('/api/users', usersRoute);
+router.all('*', middlewares, allRoute);
 
 app.use('/', router);
 
