@@ -1,30 +1,15 @@
-/* eslint no-unused-vars:0 */
-import { Dirwatcher, Importer } from './modules';
+import express from 'express';
+import cookieParser from './middlewares/cookie-parser';
+import queryParser from './middlewares/query-parser';
 
-const dirwatcher = new Dirwatcher();
-const importer = new Importer();
+const app = express();
+const router = express.Router();
 
-const logger = (error, data) => {
-    if (error) {
-        console.error(error);
-    }
+router.all('*', cookieParser, queryParser, (request, response) => {
+    response.status(200);
+    response.end();
+});
 
-    console.log(data);
-};
+app.use('/', router);
 
-const handleImport = async (paths) => {
-    try {
-        const data = await importer.import(paths);
-
-        logger(null, data);
-    } catch (e) {
-        logger(e);
-    }
-};
-
-const handleSyncImport = (paths) => {
-    importer.importSync(paths, logger);
-};
-
-dirwatcher.watch('./data', 1000);
-dirwatcher.on('changed', handleImport);
+export default app;
