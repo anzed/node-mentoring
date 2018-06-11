@@ -1,13 +1,19 @@
+import addProductRoute from './add-product-route';
 import allRoute from './all-route';
-import productRoute from './product-route';
-import productsRoute from './products-route';
-import userRoute from './user-route';
-import usersRoute from './users-route';
+import getProductRoute from './get-product-route';
+import getProductsRoute from './get-products-route';
+import getReviewsRoute from './get-reviews-route';
+import getUserRoute from './get-user-route';
+import getUsersRoute from './get-users-route';
 
-export {
+const routes = {
+    addProductRoute,
     allRoute,
-    productRoute,
-    productsRoute,
-    userRoute,
-    usersRoute,
+    getProductRoute,
+    getProductsRoute,
+    getReviewsRoute,
+    getUserRoute,
+    getUsersRoute,
 };
+
+export default routes;
