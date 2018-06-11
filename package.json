@@ -4,10 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -r babel-register app.js",
+    "start": "nodemon -r babel-register index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "echo": "node -r babel-register http-servers/echo-server.js",
+    "html": "node -r babel-register http-servers/html-server.js",
+    "json": "node -r babel-register http-servers/json-server.js",
+    "text": "node -r babel-register http-servers/text-server.js"
   },
   "author": "Mikita Zakharanka <anzed313@gmail.com>",
   "license": "ISC",
@@ -23,6 +27,7 @@
     "nodemon": "1.17.3"
   },
   "dependencies": {
-    "csvtojson": "1.1.9"
+    "csvtojson": "1.1.9",
+    "express": "4.16.3"
   }
 }

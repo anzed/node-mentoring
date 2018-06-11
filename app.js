@@ -1,30 +1,26 @@
-/* eslint no-unused-vars:0 */
-import { Dirwatcher, Importer } from './modules';
+import express from 'express';
+import { cookieParser, queryParser, errorHandler } from './middlewares';
+import routes from './routes';
 
-const dirwatcher = new Dirwatcher();
-const importer = new Importer();
+const app = express();
+const router = express.Router();
+const middlewares = [cookieParser, queryParser];
 
-const logger = (error, data) => {
-    if (error) {
-        console.error(error);
-    }
+// GET requests
+router.get('/api/products', routes.getProductsRoute);
+router.get('/api/products/:id', routes.getProductRoute);
+router.get('/api/products/:id/reviews', routes.getReviewsRoute);
+router.get('/api/users', routes.getUsersRoute);
+router.get('/api/users/:id', routes.getUserRoute);
 
-    console.log(data);
-};
+// POST requests
+router.post('/api/products', routes.addProductRoute);
 
-const handleImport = async (paths) => {
-    try {
-        const data = await importer.import(paths);
+// All requests
+router.all('*', middlewares, routes.allRoute);
 
-        logger(null, data);
-    } catch (e) {
-        logger(e);
-    }
-};
+app.use(express.json());
+app.use('/', router);
+app.use(errorHandler);
 
-const handleSyncImport = (paths) => {
-    importer.importSync(paths, logger);
-};
-
-dirwatcher.watch('./data', 1000);
-dirwatcher.on('changed', handleImport);
+export default app;
