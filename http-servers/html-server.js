@@ -1,6 +1,7 @@
-/* eslint no-use-before-define:0 */
+/* eslint no-use-before-define:0, no-unused-vars:0 */
 import http from 'http';
 import fs from 'fs';
+import stream from 'stream';
 
 const message = 'Hello World';
 const server = http.createServer();
@@ -19,6 +20,8 @@ server.on('request', (request, response) => {
     });
 
     response.end(html);
+
+    // readable().pipe(transformData()).pipe(response);
 });
 
 server.listen(3000, 'localhost', () => {
@@ -29,4 +32,26 @@ function getIndexHtml() {
     const html = fs.readFileSync('static/index.html', 'utf8');
 
     return html.replace('{message}', message);
+}
+
+// Second implementation
+function readable() {
+    const html = fs.readFileSync('static/index.html', 'utf8');
+    const readStream = new stream.Readable();
+
+    readStream.push(html);
+    readStream.push(null);
+
+    return readStream;
+}
+
+function transformData() {
+    return new stream.Transform({
+        objectMode: true,
+        transform: (data, _, done) => {
+            const transformedData = data.toString().replace('{message}', message);
+
+            done(null, transformedData);
+        },
+    });
 }
