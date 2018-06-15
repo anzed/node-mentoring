@@ -8,7 +8,10 @@ const getUsersRoute = (request, response, next) => {
 
         next();
     } else {
-        next('Users were not found');
+        const error = new Error('Users were not found');
+        error.statusCode = 500;
+
+        next(error);
     }
 };
 

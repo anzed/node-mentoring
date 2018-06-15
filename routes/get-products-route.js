@@ -8,7 +8,10 @@ const getProductsRoute = (request, response, next) => {
 
         next();
     } else {
-        next('Products were not found');
+        const error = new Error('Products were not found');
+        error.statusCode = 500;
+
+        next(error);
     }
 };
 

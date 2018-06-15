@@ -9,7 +9,10 @@ const getProductRoute = (request, response, next) => {
 
         next();
     } else {
-        next('Product was not found. Try another id.');
+        const error = new Error('Product was not found. Try another id.');
+        error.statusCode = 404;
+
+        next(error);
     }
 };
 

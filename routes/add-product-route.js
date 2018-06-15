@@ -9,7 +9,10 @@ const addProductRoute = (request, response, next) => {
 
         next();
     } else {
-        next('Please add valid product.');
+        const error = new Error('Please add valid product.');
+        error.statusCode = 500;
+
+        next(error);
     }
 };
 

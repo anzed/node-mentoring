@@ -9,7 +9,10 @@ const getReviewsRoute = (request, response, next) => {
 
         next();
     } else {
-        next('Reviews were not found. Try another id.');
+        const error = new Error('Reviews were not found. Try another id.');
+        error.statusCode = 404;
+
+        next(error);
     }
 };
 

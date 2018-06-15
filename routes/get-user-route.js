@@ -9,7 +9,10 @@ const getUserRoute = (request, response, next) => {
 
         next();
     } else {
-        next('User was not found. Try another id.');
+        const error = new Error();
+        error.statusCode = 404;
+
+        next(error);
     }
 };
 
