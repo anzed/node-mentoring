@@ -9,7 +9,7 @@ import { cookieParser, errorHandler, queryParser, verifyPassport, verifyToken } 
 import routes from './routes';
 import dataOperations from './helpers/data-operations';
 
-const BY_TOKEN = true; // 'false' value will enable passport autentication
+const BY_TOKEN = true; // 'false' value will enable passport authentication
 
 passport.use(new LocalStrategy({
     usernameField: 'login',
