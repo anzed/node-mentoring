@@ -1,12 +1,52 @@
+/* eslint max-len:0 */
+/* eslint no-unused-expressions:0 */
+/* eslint consistent-return:0 */
 import express from 'express';
-import { cookieParser, errorHandler, queryParser, verifyToken } from './middlewares';
+import session from 'express-session';
+import passport from 'passport';
+import LocalStrategy from 'passport-local';
+import { cookieParser, errorHandler, queryParser, verifyPassport, verifyToken } from './middlewares';
 import routes from './routes';
+import dataOperations from './helpers/data-operations';
+
+const BY_TOKEN = true; // 'false' value will enable passport autentication
+
+passport.use(new LocalStrategy({
+    usernameField: 'login',
+    passwordField: 'password',
+}, (username, password, done) => {
+    const users = JSON.parse(dataOperations.getUsers()).data;
+    const requestedUser = users.find(user => user.name.toLowerCase() === username.toLowerCase());
+
+    if (requestedUser && requestedUser.password !== password) {
+        done(null, false, 'ololo:(');
+    } else {
+        done(null, requestedUser);
+    }
+}));
+
+passport.serializeUser((user, cb) => cb(null, user.id));
+passport.deserializeUser((id, cb) => {
+    const users = JSON.parse(dataOperations.getUsers()).data;
+    const requestedUser = users.find(user => user.id === id);
+
+    if (requestedUser) {
+        return cb(null, requestedUser);
+    }
+});
 
 const app = express();
 const router = express.Router();
 const middlewares = [cookieParser, queryParser];
 
-app.use(verifyToken);
+app.use(express.urlencoded());
+app.use(express.json());
+BY_TOKEN ? app.use(verifyToken) : app.use(verifyPassport);
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/', router);
+app.use(errorHandler);
 
 // GET requests
 router.get('/auth', routes.getAuthRoute);
@@ -17,15 +57,17 @@ router.get('/api/users', routes.getUsersRoute);
 router.get('/api/users/:id', routes.getUserRoute);
 
 // POST requests
-router.post('/auth', routes.doAuthRoute);
+if (BY_TOKEN) {
+    router.post('/auth', routes.doAuthRoute);
+} else {
+    router.post('/auth', passport.authenticate('local', { failureRedirect: '/auth' }), (req, res) => {
+        res.send('Success');
+    });
+}
+
 router.post('/api/products', routes.addProductRoute);
 
 // All requests
 router.all('*', middlewares, routes.allRoute);
-
-app.use(express.urlencoded());
-app.use(express.json());
-app.use('/', router);
-app.use(errorHandler);
 
 export default app;

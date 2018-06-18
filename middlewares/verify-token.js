@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const verifyToken = (request, response, next) => {
-    if (request.path === '/auth') {
+    if (request.path === '/auth' || request.path === '/favicon.ico') {
         next();
     } else {
         const token = request.headers.authorization.split(' ')[1];
