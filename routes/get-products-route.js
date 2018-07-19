@@ -1,18 +1,21 @@
 import dataOperations from '../helpers/data-operations';
 
 const getProductsRoute = (request, response, next) => {
-    const products = dataOperations.getProducts();
+    dataOperations.getProducts()
+        .then(data => data.rows)
+        .then((products) => {
+            const stringifyedProducts = JSON.stringify(products);
 
-    if (products) {
-        response.write(products);
+            response.write(stringifyedProducts);
 
-        next();
-    } else {
-        const error = new Error('Products were not found');
-        error.statusCode = 500;
+            next();
+        })
+        .catch(() => {
+            const error = new Error('Products were not found');
+            error.statusCode = 500;
 
-        next(error);
-    }
+            next(error);
+        });
 };
 
 export default getProductsRoute;

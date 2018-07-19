@@ -2,18 +2,22 @@ import dataOperations from '../helpers/data-operations';
 
 const getUserRoute = (request, response, next) => {
     const userId = +request.params.id;
-    const user = dataOperations.getUser(userId);
 
-    if (user) {
-        response.write(JSON.stringify(user));
+    dataOperations.getUser(userId)
+        .then(data => data.rows)
+        .then((user) => {
+            const stringifyedUser = JSON.stringify(user);
 
-        next();
-    } else {
-        const error = new Error();
-        error.statusCode = 404;
+            response.write(stringifyedUser);
 
-        next(error);
-    }
+            next();
+        })
+        .catch(() => {
+            const error = new Error('User was not found');
+            error.statusCode = 404;
+
+            next(error);
+        });
 };
 
 export default getUserRoute;

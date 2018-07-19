@@ -1,18 +1,21 @@
 import dataOperations from '../helpers/data-operations';
 
 const getUsersRoute = (request, response, next) => {
-    const users = dataOperations.getUsers();
+    dataOperations.getUsers()
+        .then(data => data.rows)
+        .then((users) => {
+            const stringifyedUsers = JSON.stringify(users);
 
-    if (users) {
-        response.write(users);
+            response.write(stringifyedUsers);
 
-        next();
-    } else {
-        const error = new Error('Users were not found');
-        error.statusCode = 500;
+            next();
+        })
+        .catch(() => {
+            const error = new Error('Users were not found');
+            error.statusCode = 500;
 
-        next(error);
-    }
+            next(error);
+        });
 };
 
 export default getUsersRoute;

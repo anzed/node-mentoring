@@ -3,31 +3,38 @@ import dataOperations from '../helpers/data-operations';
 
 const doAuthRoute = (request, response, next) => {
     const { login, password } = request.body;
-    const users = dataOperations.getUsers();
-    const parsedUsers = JSON.parse(users).data;
-    const requestedUser = parsedUsers.find(user => user.name.toLowerCase() === login.toLowerCase());
 
-    if (requestedUser && requestedUser.password === password) {
-        const token = jwt.sign(requestedUser, 'secret');
-        const responseObject = {
-            code: 200,
-            message: 'OK',
-            data: {
-                id: requestedUser.id,
-                username: requestedUser.name,
-            },
-            token,
-        };
+    dataOperations.getUsers()
+        .then((data) => {
+            const users = data.rows;
 
-        response.write(JSON.stringify(responseObject));
+            return users.find(user => user.name.toLowerCase() === login.toLowerCase());
+        })
+        .then((requestedUser) => {
+            if (requestedUser && requestedUser.password === password) {
+                const token = jwt.sign(requestedUser, 'secret');
+                const responseObject = {
+                    code: 200,
+                    message: 'OK',
+                    data: {
+                        id: requestedUser.id,
+                        username: requestedUser.name,
+                    },
+                    token,
+                };
+                const stringifyedObject = JSON.stringify(responseObject);
 
-        next();
-    } else {
-        const error = new Error('Not found');
-        error.statusCode = 404;
+                response.write(stringifyedObject);
 
-        next(error);
-    }
+                next();
+            }
+        })
+        .catch(() => {
+            const error = new Error('Not found');
+            error.statusCode = 404;
+
+            next(error);
+        });
 };
 
 export default doAuthRoute;

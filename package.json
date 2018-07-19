@@ -7,11 +7,7 @@
     "start": "nodemon -r babel-register index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
-    "precommit": "npm run lint",
-    "echo": "node -r babel-register http-servers/echo-server.js",
-    "html": "node -r babel-register http-servers/html-server.js",
-    "json": "node -r babel-register http-servers/json-server.js",
-    "text": "node -r babel-register http-servers/text-server.js"
+    "precommit": "npm run lint"
   },
   "author": "Mikita Zakharanka <anzed313@gmail.com>",
   "license": "ISC",
@@ -32,6 +28,10 @@
     "express-session": "1.15.6",
     "jsonwebtoken": "8.3.0",
     "passport": "0.4.0",
-    "passport-local": "1.0.0"
+    "passport-local": "1.0.0",
+    "pg": "7.4.3",
+    "pg-hstore": "2.3.2",
+    "sequelize": "4.38.0",
+    "sequelize-cli": "4.0.0"
   }
 }

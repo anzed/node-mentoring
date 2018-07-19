@@ -1,23 +1,23 @@
 /* eslint no-param-reassign: 0 */
-import fs from 'fs';
+import { Pool } from 'pg';
 
-const productsPath = 'data/products.json';
-const usersPath = 'data/users.json';
+const pool = new Pool({
+    host: 'localhost',
+    user: process.argv[2],
+    password: process.argv[3],
+    database: process.argv[4],
+});
 
 const dataOperations = {
-    getProduct: id => JSON.parse(fs.readFileSync(productsPath, 'utf8')).data.find(product => product.id === +id),
-    getProducts: () => fs.readFileSync(productsPath, 'utf8'),
-    getUser: id => JSON.parse(fs.readFileSync(usersPath, 'utf8')).data.find(user => user.id === +id),
-    getUsers: () => fs.readFileSync(usersPath, 'utf8'),
+    getProduct: id => pool.query(`SELECT * FROM products WHERE ID = ${id}`),
+    getProducts: () => pool.query('SELECT * FROM products'),
+    getUser: id => pool.query(`SELECT * FROM users WHERE ID = ${id}`),
+    getUsers: () => pool.query('SELECT * FROM users'),
     addProduct: (newProduct) => {
-        const products = JSON.parse(fs.readFileSync(productsPath, 'utf8'));
-        const lastProductIndex = products.data.length - 1;
-        const nextId = products.data[lastProductIndex].id + 1;
-
-        newProduct.id = nextId;
-        products.data.push(newProduct);
-
-        fs.writeFileSync(productsPath, JSON.stringify(products));
+        pool.query(`
+            INSERT INTO products(brand, model, reviews)
+            VALUES (${newProduct.brand}, ${newProduct.model}, ${newProduct.reviews})
+        `);
     },
 };
 

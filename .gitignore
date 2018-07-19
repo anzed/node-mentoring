@@ -1,5 +1,8 @@
 # dependencies
 /node_modules
 
+# config
+/config
+
 npm-debug.log*
 /.idea
