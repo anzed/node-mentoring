@@ -1,9 +1,13 @@
 import Sequelize from 'sequelize';
 
-const sequelize = new Sequelize(process.argv[4], process.argv[2], process.argv[3], {
-    host: '127.0.0.1',
-    dialect: 'postgres',
-});
+const sequelize = new Sequelize(
+    process.env.POSTGRES_DB || process.argv[4],
+    process.env.POSTGRES_USER || process.argv[2],
+    process.env.POSTGRES_PASSWORD || process.argv[3], {
+        host: process.env.DB_HOST || '127.0.0.1',
+        dialect: 'postgres',
+    },
+);
 
 const models = {
     User: sequelize.import('./user'),
