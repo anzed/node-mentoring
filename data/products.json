@@ -1,0 +1,40 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "brand": "Apple",
+            "model": "iPhone 7",
+            "reviews": [
+                "iPhone 7 firsts review",
+                "iPhone 7 second review"
+            ]
+        },
+        {
+            "id": 2,
+            "brand": "Apple",
+            "model": "iPhone X",
+            "reviews": [
+                "iPhone X first review",
+                "iPhone X second review;"
+            ]
+        },
+        {
+            "id": 3,
+            "brand": "Samsung",
+            "model": "Galaxy S8",
+            "reviews": [
+                "Galaxy S8 first review",
+                "Galaxy S8 second review;"
+            ]
+        },
+        {
+            "id": 4,
+            "brand": "Samsung",
+            "model": "Galaxy S9",
+            "reviews": [
+                "Galaxy S9 first review",
+                "Galaxy S9 second review;"
+            ]
+        }
+    ]
+}

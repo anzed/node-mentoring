@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -r babel-register app.js",
+    "start": "nodemon -r babel-register index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
     "precommit": "npm run lint"
@@ -23,6 +23,15 @@
     "nodemon": "1.17.3"
   },
   "dependencies": {
-    "csvtojson": "1.1.9"
+    "csvtojson": "1.1.9",
+    "express": "4.16.3",
+    "express-session": "1.15.6",
+    "jsonwebtoken": "8.3.0",
+    "passport": "0.4.0",
+    "passport-local": "1.0.0",
+    "pg": "7.4.3",
+    "pg-hstore": "2.3.2",
+    "sequelize": "4.38.0",
+    "sequelize-cli": "4.0.0"
   }
 }
